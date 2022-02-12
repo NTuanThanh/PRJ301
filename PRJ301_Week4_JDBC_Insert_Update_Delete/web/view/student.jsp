@@ -24,6 +24,12 @@
              function submitData(){
                  document.getElementById("search_form").submit(); 
              }
+             function doDelete(sid){
+                 var c = confirm("Do you want to delete ?");
+                 if(c){
+                     window.location.href = "delete?id=" + sid; 
+                 }
+             }
         </script>
         <form action = "search" method = "GET" id = "search_form" onchange = "submitData()">
             Department : <select name = "did">
@@ -54,7 +60,9 @@
                 <td><%= s.getDob()%></td>
                 <td><%= s.getDepartment().getDname()%></td>
                 <td> <a href="update?id=<%=s.getId()%>">Edit</a></td>
-                <td><a href="#">Delete</a></td>
+                <td>
+                    <a href="#" onclick="doDelete(<%= s.getId() %>)">Delete</a>
+                </td>
             </tr>   
             <%}%>
         </table>

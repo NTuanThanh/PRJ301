@@ -171,4 +171,32 @@ public class StudentDBContext extends DBContext{
             }
          }
      }
+     public void Delete(int id){
+        String sql = "DELETE FROM [Student]\n" +
+                     "WHERE sid = ?"; 
+        PreparedStatement stm = null; 
+         try { 
+             stm = connection.prepareStatement(sql);
+             stm.setInt(1, id);
+             stm.executeUpdate(); 
+         } catch (SQLException ex) {
+             Logger.getLogger(StudentDBContext.class.getName()).log(Level.SEVERE, null, ex);
+         }
+         finally{
+             if(stm != null){
+                 try {
+                     stm.close();
+                 } catch (SQLException ex) {
+                     Logger.getLogger(StudentDBContext.class.getName()).log(Level.SEVERE, null, ex);
+                 }
+             }
+             if(connection != null){
+                 try {
+                     connection.close();
+                 } catch (SQLException ex) {
+                     Logger.getLogger(StudentDBContext.class.getName()).log(Level.SEVERE, null, ex);
+                 }
+             }
+         }       
+     }
 }
