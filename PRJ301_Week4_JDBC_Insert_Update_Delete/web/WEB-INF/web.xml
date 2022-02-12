@@ -8,6 +8,10 @@
         <servlet-name>StudentInsertController</servlet-name>
         <servlet-class>controller.StudentInsertController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>StudentUpdateController</servlet-name>
+        <servlet-class>controller.StudentUpdateController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>StudentSearchController</servlet-name>
         <url-pattern>/student/search</url-pattern>
@@ -15,6 +19,10 @@
     <servlet-mapping>
         <servlet-name>StudentInsertController</servlet-name>
         <url-pattern>/student/insert</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StudentUpdateController</servlet-name>
+        <url-pattern>/student/update</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

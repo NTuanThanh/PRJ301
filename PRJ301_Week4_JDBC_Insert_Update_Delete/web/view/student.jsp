@@ -42,6 +42,8 @@
                 <th>Gender</th>
                 <th>Date of birth</th>
                 <th>Department</th>
+                <th></th>
+                <th></th>
             </tr>
             </br>
             <%for (Student s : students){ %>
@@ -51,6 +53,8 @@
                 <td><%= s.isGender() == true ? "Male" : "Female"%></td>
                 <td><%= s.getDob()%></td>
                 <td><%= s.getDepartment().getDname()%></td>
+                <td> <a href="update?id=<%=s.getId()%>">Edit</a></td>
+                <td><a href="#">Delete</a></td>
             </tr>   
             <%}%>
         </table>

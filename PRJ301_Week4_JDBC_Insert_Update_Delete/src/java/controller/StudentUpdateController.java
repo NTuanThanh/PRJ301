@@ -22,16 +22,25 @@ import model.Student;
  *
  * @author pv
  */
-public class StudentInsertController extends HttpServlet {
+public class StudentUpdateController extends HttpServlet {
 
+   
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        DepartmentDBContext departmentDB = new DepartmentDBContext(); 
-        ArrayList<Department> departs = departmentDB.getDeparts(); 
+        String raw_id = request.getParameter("id");
+        int id = Integer.parseInt(raw_id); 
+        // get information of Student have that id
+        StudentDBContext studentDB = new StudentDBContext(); 
+        Student Student = studentDB.getStudent(id);
+        // get all Department to show update view
+        DepartmentDBContext departDB = new DepartmentDBContext();
+        ArrayList<Department> departs = departDB.getDeparts(); 
+        request.setAttribute("student", Student);
         request.setAttribute("departs", departs);
-        request.getRequestDispatcher("../view/insert.jsp").forward(request, response);
-    } 
+        request.getRequestDispatcher("../view/update.jsp").forward(request, response);
+    }
+ 
 
     /**
      * Handles the HTTP <code>POST</code> method.
@@ -44,20 +53,21 @@ public class StudentInsertController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
-        String name = request.getParameter("name"); 
-        Date dob = Date.valueOf(request.getParameter("dob")); 
-        boolean Gender = request.getParameter("gender").equals("male"); 
+        String raw_sid = request.getParameter("sid"); 
+        String raw_name = request.getParameter("sname"); 
+        String raw_dob = request.getParameter("dob");
+        String raw_gender = request.getParameter("gender");
+        String raw_did = request.getParameter("did"); 
+        int sid = Integer.parseInt(raw_sid); 
+        String sname = raw_name; 
+        Date dob = Date.valueOf(raw_dob); 
+        boolean gender = raw_gender.equals("male"); 
+        int did = Integer.parseInt(raw_did); 
         Department d = new Department(); 
-        d.setDid(Integer.parseInt(request.getParameter("did")));
-        Student s = new Student();
-        s.setId(id);
-        s.setName(name);
-        s.setDob(dob);
-        s.setGender(Gender);
-        s.setDepartment(d);
-       StudentDBContext studentDB = new StudentDBContext(); 
-        studentDB.Insert(s);
+        d.setDid(did);
+        Student s = new Student(did, sname, gender, dob, d); 
+        StudentDBContext studentDB = new StudentDBContext();
+        studentDB.Update(s);
         response.sendRedirect("search");
     }
 

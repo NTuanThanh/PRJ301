@@ -92,4 +92,83 @@ public class StudentDBContext extends DBContext{
          }
         
      }
+     public Student getStudent(int id){
+         String sql = "select s.sid, sname, gender, dob, d.did, dname from Student as s inner join Department \n" +
+                        "as d on s.did = d.did\n" +
+                        "where s.sid = ?";
+         Student s = new Student();
+         PreparedStatement stm = null; 
+         try { 
+             stm = connection.prepareStatement(sql);
+             stm.setInt(1, id);
+             ResultSet rs = stm.executeQuery(); 
+             while(rs.next()){ 
+                s.setId(rs.getInt("sid"));
+                s.setName(rs.getString("sname"));
+                s.setDob(rs.getDate("dob"));
+                s.setGender(rs.getBoolean("gender"));
+                Department d = new Department(); 
+                d.setDid(rs.getInt("did"));
+                d.setDname(rs.getString("dname"));
+                s.setDepartment(d); 
+             }
+         } catch (SQLException ex) {
+             Logger.getLogger(StudentDBContext.class.getName()).log(Level.SEVERE, null, ex);
+         }
+         finally{
+            if(stm != null){
+                try {
+                    stm.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(StudentDBContext.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            if(connection != null){
+                try {
+                    connection.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(StudentDBContext.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+         }
+        return s;
+     }
+     public void Update(Student s){
+        String sql = "UPDATE [Student]\n" +
+                    "   SET [sid] = ?\n" +
+                    "      ,[sname] = ?\n" +
+                    "      ,[gender] = ?\n" +
+                    "      ,[dob] = ?\n" +
+                    "      ,[did] = ?\n" +
+                    " WHERE sid = ?";
+        PreparedStatement stm = null; 
+         try { 
+             stm = connection.prepareStatement(sql);
+             stm.setInt(1, s.getId());
+             stm.setString(2, s.getName());
+             stm.setBoolean(3, s.isGender());
+             stm.setDate(4, s.getDob());
+             stm.setInt(5, s.getDepartment().getDid());
+             stm.setInt(6, s.getId());
+             stm.executeUpdate();
+         } catch (SQLException ex) {
+             Logger.getLogger(StudentDBContext.class.getName()).log(Level.SEVERE, null, ex);
+         }
+         finally{
+            if(stm != null){
+                try {
+                    stm.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(StudentDBContext.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            if(connection != null){
+                try {
+                    connection.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(StudentDBContext.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+         }
+     }
 }
